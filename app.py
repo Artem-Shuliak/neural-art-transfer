@@ -74,8 +74,8 @@ def upload():
         if allowed_file(base_photo.filename) and allowed_file(style_photo.filename):
             
             # image_uploads_dir = os.path.abspath('image_uploads')
-            app_root = os.path.dirname(os.path.abspath(__file__))
-            image_uploads_dir = os.path.join(app_root, 'image_uploads')
+            # app_root = os.path.dirname(app.root_path)
+            image_uploads_dir = os.path.join(app.root_path, 'image_uploads')
             print(image_uploads_dir)
             
             base_photo_filename = secure_filename(base_photo.filename) 
