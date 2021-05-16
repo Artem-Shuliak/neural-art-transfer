@@ -87,7 +87,7 @@ z-index: 1000;
   }
 
   function clear() {
-    clearInterval(intervalId)
+    clearInterval(intervalId);
   }
 
   function fetchProgress() {
@@ -100,7 +100,7 @@ z-index: 1000;
       updateProgressBar(animation_progress);
       if (result !== 'none') {
         clear();
-        window.location.href = data.redirect
+        window.location.href = data.redirect;
       }
     });
   }
