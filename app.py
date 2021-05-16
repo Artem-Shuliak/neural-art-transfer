@@ -6,7 +6,7 @@ from worker import r
 from neural_model_task import background_task
 
 #where our images will go
-upload_folder = '/app/image_uploads'
+upload_folder = 'image_uploads'
 #what filetypes are allowed
 allowed_extensions = {'png', 'jpg', 'jpeg'}
 
@@ -74,13 +74,21 @@ def upload():
         if allowed_file(base_photo.filename) and allowed_file(style_photo.filename):
             
             base_photo_filename = secure_filename(base_photo.filename) 
-            base_photo.save(os.path.join(app.config['upload_folder'], base_photo_filename))
-            base_photo_filepath = os.path.join(app.config['upload_folder'], base_photo_filename)
+            # base_photo.save(os.path.join(app.config['upload_folder'], base_photo_filename))
+            # base_photo_filepath = os.path.join(app.config['upload_folder'], base_photo_filename)
+            
+            base_photo.save(os.path.join('/app/image_uploads/', base_photo_filename))
+            base_photo_filepath = os.path.join('/app/image_uploads/', base_photo_filename)
             result_photo_filename = base_photo_filename
             
             style_photo_filename = secure_filename(style_photo.filename) 
-            style_photo.save(os.path.join(app.config['upload_folder'], style_photo_filename))
-            style_photo_filepath = os.path.join(app.config['upload_folder'], style_photo_filename)
+            
+            # style_photo.save(os.path.join(app.config['upload_folder'], style_photo_filename))
+            # style_photo_filepath = os.path.join(app.config['upload_folder'], style_photo_filename)
+            
+            style_photo.save(os.path.join('/app/image_uploads/', style_photo_filename))
+            style_photo_filepath = os.path.join('/app/image_uploads/', style_photo_filename)
+            
             job = q.enqueue(background_task, base_photo_filepath, style_photo_filepath, result_photo_filename)
             global job_id
             job_id = job.id

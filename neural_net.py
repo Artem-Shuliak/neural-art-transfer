@@ -148,7 +148,7 @@ class nst_model:
                 print('saved')
                 img = self.deprocess_image(combination_image.numpy())
                 dropped_name = self.result_name.rsplit( ".", 1 )[0]
-                fname = "static/result_images/" + dropped_name + '.png'
+                fname = "/app/static/result_images/" + dropped_name + '.png'
                 print(fname)
                 keras.preprocessing.image.save_img(fname, img)
                 return fname
