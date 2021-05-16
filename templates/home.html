@@ -95,10 +95,13 @@ z-index: 1000;
       return response.json();
     }).then(data => {
       var result = data.response;
+
       console.log(data);
       console.log(result);
+
       animation_progress += Math.ceil(((1/22)*100));
       updateProgressBar(animation_progress);
+      
       if (result !== null) {
         clear();
         window.location.href = data.redirect;

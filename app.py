@@ -40,15 +40,21 @@ def home():
 
 @app.route('/progress')
 def progres():
+    
     # print(model_progress)
     global job_id 
     print(job_id)
+    
     response = q.fetch_job(job_id)
+    status = response.get_status
+    status_string = f'{status}'
+    
     if response.result == None: 
-        return jsonify(response=response.result)
+        return jsonify(response=response.result, status=status_string)
+    
     if response.result != None:
         session['result_image'] = response.result
-        return jsonify(response=response.result, redirect=url_for("result"))
+        return jsonify(response=response.result, redirect=url_for("result"), status=status_string)
      
      
 @app.route('/result')
