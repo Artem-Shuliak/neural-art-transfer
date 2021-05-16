@@ -6,7 +6,7 @@ from worker import r
 from neural_model_task import background_task
 
 #where our images will go
-upload_folder = 'image_uploads'
+upload_folder = '/app/image_uploads'
 #what filetypes are allowed
 allowed_extensions = {'png', 'jpg', 'jpeg'}
 
