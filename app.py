@@ -72,26 +72,23 @@ def upload():
         style_photo = request.files['style_photo']
    
         if allowed_file(base_photo.filename) and allowed_file(style_photo.filename):
-            
-            # image_uploads_dir = os.path.abspath('image_uploads')
-            # app_root = os.path.dirname(app.root_path)
-            base_dir = os.getcwd()
-            image_uploads_dir = os.path.join(base_dir, 'image_uploads')
-            print(image_uploads_dir)
+        
+            # base_dir = os.getcwd()
+            # image_uploads_dir = os.path.join(base_dir, 'image_uploads')
             
             base_photo_filename = secure_filename(base_photo.filename) 
-            # base_photo.save(os.path.join(app.config['upload_folder'], base_photo_filename))
-            # base_photo_filepath = os.path.join(app.config['upload_folder'], base_photo_filename)
-            base_photo.save(os.path.join(image_uploads_dir, base_photo_filename))
-            base_photo_filepath = os.path.join(image_uploads_dir, base_photo_filename)
+            base_photo.save(os.path.join(app.config['upload_folder'], base_photo_filename))
+            base_photo_filepath = os.path.join(app.config['upload_folder'], base_photo_filename)
+            # base_photo.save(os.path.join(image_uploads_dir, base_photo_filename))
+            # base_photo_filepath = os.path.join(image_uploads_dir, base_photo_filename)
             
             result_photo_filename = base_photo_filename
             
             style_photo_filename = secure_filename(style_photo.filename)    
-            # style_photo.save(os.path.join(app.config['upload_folder'], style_photo_filename))
-            # style_photo_filepath = os.path.join(app.config['upload_folder'], style_photo_filename) 
-            style_photo.save(os.path.join(image_uploads_dir, style_photo_filename))
-            style_photo_filepath = os.path.join(image_uploads_dir, style_photo_filename)
+            style_photo.save(os.path.join(app.config['upload_folder'], style_photo_filename))
+            style_photo_filepath = os.path.join(app.config['upload_folder'], style_photo_filename) 
+            # style_photo.save(os.path.join(image_uploads_dir, style_photo_filename))
+            # style_photo_filepath = os.path.join(image_uploads_dir, style_photo_filename)
             
             job = q.enqueue(background_task, base_photo_filepath, style_photo_filepath, result_photo_filename)
             global job_id
