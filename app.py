@@ -75,7 +75,8 @@ def upload():
             
             # image_uploads_dir = os.path.abspath('image_uploads')
             # app_root = os.path.dirname(app.root_path)
-            image_uploads_dir = os.path.join(app.root_path, 'image_uploads')
+            base_dir = os.getcwd()
+            image_uploads_dir = os.path.join(base_dir, 'image_uploads')
             print(image_uploads_dir)
             
             base_photo_filename = secure_filename(base_photo.filename) 
