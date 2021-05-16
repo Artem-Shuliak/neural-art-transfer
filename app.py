@@ -27,13 +27,13 @@ global job_id
 @app.route('/', methods = ["POST", "GET"])
 def home():
     
-    for file in os.scandir('image_uploads/'):
-        if file.name != '.gitkeep':
-            os.remove(file)
+    # for file in os.scandir('image_uploads/'):
+    #     if file.name != '.gitkeep':
+    #         os.remove(file)
 
-    for file in os.scandir('static/result_images/'):
-        if file.name != '.gitkeep':
-            os.remove(file)
+    # for file in os.scandir('static/result_images/'):
+    #     if file.name != '.gitkeep':
+    #         os.remove(file)
             
     return render_template('home.html')
 
