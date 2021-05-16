@@ -77,8 +77,8 @@ def upload():
             # base_photo.save(os.path.join(app.config['upload_folder'], base_photo_filename))
             # base_photo_filepath = os.path.join(app.config['upload_folder'], base_photo_filename)
             
-            base_photo.save(os.path.join('/app/image_uploads/', base_photo_filename))
-            base_photo_filepath = os.path.join('/app/image_uploads/', base_photo_filename)
+            base_photo.save(os.path.join('image_uploads/', base_photo_filename))
+            base_photo_filepath = os.path.join('image_uploads/', base_photo_filename)
             result_photo_filename = base_photo_filename
             
             style_photo_filename = secure_filename(style_photo.filename) 
@@ -86,8 +86,8 @@ def upload():
             # style_photo.save(os.path.join(app.config['upload_folder'], style_photo_filename))
             # style_photo_filepath = os.path.join(app.config['upload_folder'], style_photo_filename)
             
-            style_photo.save(os.path.join('/app/image_uploads/', style_photo_filename))
-            style_photo_filepath = os.path.join('/app/image_uploads/', style_photo_filename)
+            style_photo.save(os.path.join('image_uploads/', style_photo_filename))
+            style_photo_filepath = os.path.join('image_uploads/', style_photo_filename)
             
             job = q.enqueue(background_task, base_photo_filepath, style_photo_filepath, result_photo_filename)
             global job_id
