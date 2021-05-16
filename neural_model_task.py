@@ -8,5 +8,5 @@ def background_task(base_photo_filepath, style_photo_filepath, result_photo_file
                 
     model = nst_model(base_photo_filepath, style_photo_filepath, result_photo_filename)
     print('started function')
-    fname = model.train_net(30, callback)
+    fname = model.train_net(5, callback)
     return fname

@@ -95,7 +95,8 @@ z-index: 1000;
       return response.json();
     }).then(data => {
       var result = data.response;
-      animation_progress += FLoat2Int(((1/22)*100));
+      console.log(result)
+      animation_progress += Math.ceil(((1/22)*100));
       updateProgressBar(animation_progress);
       if (result !== 'none') {
         clear();

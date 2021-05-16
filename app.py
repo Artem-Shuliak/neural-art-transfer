@@ -75,12 +75,11 @@ def upload():
             style_photo_filename = secure_filename(style_photo.filename) 
             style_photo.save(os.path.join(app.config['upload_folder'], style_photo_filename))
             style_photo_filepath = os.path.join(app.config['upload_folder'], style_photo_filename)
-            print(base_photo_filepath)
-            
             job = q.enqueue(background_task, base_photo_filepath, style_photo_filepath, result_photo_filename)
             global job_id
             job_id = job.id
-            return jsonify(reponse='sucess') 
+            print(job_id)
+            return jsonify(reponse='sucess', job_id=job_id) 
 
     return jsonify(reponse='no upload')
         
