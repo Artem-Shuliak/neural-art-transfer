@@ -45,10 +45,10 @@ def progres():
     print(job_id)
     response = q.fetch_job(job_id)
     if response.result == None: 
-        return jsonify(response='none')
+        return jsonify(response=response.result)
     if response.result != None:
         session['result_image'] = response.result
-        return jsonify(response='some', redirect=url_for("result"))
+        return jsonify(response=response.result, redirect=url_for("result"))
      
      
 @app.route('/result')
