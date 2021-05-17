@@ -5,6 +5,7 @@ from rq import Queue
 from worker import r
 from neural_model_task import background_task
 from PIL import Image
+from tensorflow import keras 
 import boto3
 
 s3 = boto3.client('s3')
@@ -98,8 +99,11 @@ def upload():
             
             base_photo_url = f"http://{bucket_name}.s3.amazonaws.com/{base_photo_name}"
             style_photo_url = f"http://{bucket_name}.s3.amazonaws.com/{style_photo_name}"
+           
+            base_image_path = keras.utils.get_file(base_photo_name, base_photo_url)
+            style_reference_image_path = keras.utils.get_file(style_photo_name, style_photo_url)
    
-            job = q.enqueue(background_task, base_photo_name, base_photo_url, style_photo_name, style_photo_url, result_photo_filename)
+            job = q.enqueue(background_task, base_image_path, style_reference_image_path, result_photo_filename)
             global job_id
             job_id = job.id
             print(job_id)
