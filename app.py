@@ -101,8 +101,10 @@ def upload():
             style_photo_url = f"http://{bucket_name}.s3.amazonaws.com/{style_photo_name}"
            
             base_image_path = keras.utils.get_file(base_photo_name, base_photo_url)
+            print(base_image_path)
             style_reference_image_path = keras.utils.get_file(style_photo_name, style_photo_url)
-   
+            print(style_reference_image_path)
+        
             job = q.enqueue(background_task, base_image_path, style_reference_image_path, result_photo_filename)
             global job_id
             job_id = job.id

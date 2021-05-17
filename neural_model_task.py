@@ -5,6 +5,8 @@ def background_task(base_image_path, style_reference_image_path, result_photo_fi
         global model_progress
         model_progress = progress
         print(progress)
+        
+        
                 
     model = nst_model(base_image_path, style_reference_image_path, result_photo_filename)
     print('started function')
