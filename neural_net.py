@@ -2,6 +2,8 @@ import tensorflow as tf
 from tensorflow import keras 
 from tensorflow.keras.applications import vgg19
 import numpy as np
+from PIL import Image
+import os
 
 class nst_model:   
     
@@ -19,15 +21,15 @@ class nst_model:
     content_weight = 2.5e-8
     
     def setup_dimensions(self):
-        # Dimensions of the generated picture.
-        self.width, self.height = keras.preprocessing.image.load_img(self.base_image_path).size
+        self.width, self.height = self.base_image_path.size
         self.img_nrows = 400
         self.img_ncols = int(self.width * self.img_nrows / self.height)
     
     def preprocess_image(self, image_path):
         # Util function to open, resize and format pictures into appropriate tensors
-        img = keras.preprocessing.image.load_img(image_path, target_size=(self.img_nrows, self.img_ncols))
-        img = keras.preprocessing.image.img_to_array(img)
+        image = image_path.resize((int(self.img_ncols), int(self.img_nrows)), Image.ANTIALIAS)
+        img = np.array(image)
+        
         img = np.expand_dims(img, axis=0)
         img = vgg19.preprocess_input(img)
         return tf.convert_to_tensor(img)
@@ -148,8 +150,11 @@ class nst_model:
                 print('saved')
                 img = self.deprocess_image(combination_image.numpy())
                 dropped_name = self.result_name.rsplit( ".", 1 )[0]
-                fname = "static/result_images/" + dropped_name + '.png'
-                print(fname)
+                # base_dir = os.getcwd()
+                # print(base_dir)
+                fname= "static/result_images/" + dropped_name + '.png'
+                # fname = os.path.join(base_dir, dir)
+                # print(fname)
                 keras.preprocessing.image.save_img(fname, img)
                 return fname
     
