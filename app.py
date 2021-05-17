@@ -3,7 +3,7 @@ import os
 from werkzeug.utils import secure_filename
 from rq import Queue
 from worker import r
-from neural_model_task import background_task
+from pre_process import pre_proces
 from PIL import Image
 from tensorflow import keras 
 import boto3
@@ -99,19 +99,16 @@ def upload():
             
             base_photo_url = f"http://{bucket_name}.s3.amazonaws.com/{base_photo_name}"
             style_photo_url = f"http://{bucket_name}.s3.amazonaws.com/{style_photo_name}"
-           
+                   
             base_image_path = keras.utils.get_file(base_photo_name, base_photo_url)
-            print(base_image_path)
             style_reference_image_path = keras.utils.get_file(style_photo_name, style_photo_url)
-            print(style_reference_image_path)
-        
-            job = q.enqueue(background_task, base_image_path, style_reference_image_path, result_photo_filename)
+            
             global job_id
-            job_id = job.id
-            print(job_id)
+            job_id  = pre_proces(q, base_image_path, style_reference_image_path, result_photo_filename)
             return jsonify(reponse='sucess') 
 
     return jsonify(reponse='no upload')
+
         
 if __name__ == '__main__':
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'

@@ -5,13 +5,15 @@ import numpy as np
 
 class nst_model:   
     
-    def __init__(self, base_image_path, style_reference_image_path, result_photo_filename):
+    def __init__(self, base_image, style_reference_image, combination_image, result_photo_filename, img_nrows, img_ncols):
         # self.base_image_path = keras.utils.get_file(base_photo_name, base_photo_url)
         # self.style_reference_image_path = keras.utils.get_file(style_photo_name, style_photo_url)
-        self.base_image_path = base_image_path
-        self.style_reference_image_path = style_reference_image_path
-        self.result_name = result_photo_filename
-        self.setup_dimensions()
+        self.base_image = base_image
+        self.style_reference_image = style_reference_image
+        self.combination_image = combination_image
+        self.result_name = result_photo_filename        
+        self.img_nrows = img_nrows
+        self.img_ncols = img_ncols
         self.make_model()
         
     result_prefix = "image_generated"
@@ -20,19 +22,19 @@ class nst_model:
     style_weight = 1e-6
     content_weight = 2.5e-8
     
-    def setup_dimensions(self):
-        # Dimensions of the generated picture.
-        self.width, self.height = keras.preprocessing.image.load_img(self.base_image_path).size
-        self.img_nrows = 400
-        self.img_ncols = int(self.width * self.img_nrows / self.height)
+    # def setup_dimensions(self):
+    #     # Dimensions of the generated picture.
+    #     self.width, self.height = keras.preprocessing.image.load_img(self.base_image_path).size
+    #     self.img_nrows = 400
+    #     self.img_ncols = int(self.width * self.img_nrows / self.height)
     
-    def preprocess_image(self, image_path):
-        # Util function to open, resize and format pictures into appropriate tensors
-        img = keras.preprocessing.image.load_img(image_path, target_size=(self.img_nrows, self.img_ncols))
-        img = keras.preprocessing.image.img_to_array(img)
-        img = np.expand_dims(img, axis=0)
-        img = vgg19.preprocess_input(img)
-        return tf.convert_to_tensor(img)
+    # def preprocess_image(self, image_path):
+    #     # Util function to open, resize and format pictures into appropriate tensors
+    #     img = keras.preprocessing.image.load_img(image_path, target_size=(self.img_nrows, self.img_ncols))
+    #     img = keras.preprocessing.image.img_to_array(img)
+    #     img = np.expand_dims(img, axis=0)
+    #     img = vgg19.preprocess_input(img)
+    #     return tf.convert_to_tensor(img)
 
     def deprocess_image(self, x):
         # Util function to convert a tensor into a valid image
@@ -134,13 +136,13 @@ class nst_model:
 
     def train_net(self, iterations, callback):
         self.make_model()
-        base_image = self.preprocess_image(self.base_image_path)
-        style_reference_image = self.preprocess_image(self.style_reference_image_path)
-        combination_image = tf.Variable(self.preprocess_image(self.base_image_path))
+        # base_image = self.preprocess_image(self.base_image_path)
+        # style_reference_image = self.preprocess_image(self.style_reference_image_path)
+        # combination_image = tf.Variable(self.preprocess_image(self.base_image_path))
 
         for i in range(1, iterations + 1):
-            loss, grads = self.compute_loss_and_grads(combination_image, base_image, style_reference_image) 
-            self.optimizer.apply_gradients([(grads, combination_image)])
+            loss, grads = self.compute_loss_and_grads(self.combination_image, self.base_image, self.style_reference_image) 
+            self.optimizer.apply_gradients([(grads, self.combination_image)])
             print("Iteration %d: loss=%.2f" % (i, loss))
             
             progress = (i / iterations) * 100
@@ -148,7 +150,7 @@ class nst_model:
             
             if i == iterations:
                 print('saved')
-                img = self.deprocess_image(combination_image.numpy())
+                img = self.deprocess_image(self.combination_image.numpy())
                 dropped_name = self.result_name.rsplit( ".", 1 )[0]
                 fname = "static/result_images/" + dropped_name + '.png'
                 print(fname)
