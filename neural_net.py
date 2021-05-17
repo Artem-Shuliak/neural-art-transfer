@@ -5,9 +5,9 @@ import numpy as np
 
 class nst_model:   
     
-    def __init__(self, base_image, style_image, result_name):
-        self.base_image_path = base_image
-        self.style_reference_image_path = style_image
+    def __init__(self, base_photo_name, base_photo_url, style_photo_name, style_photo_url, result_name):
+        self.base_image_path = keras.utils.get_file(base_photo_name, base_photo_url)
+        self.style_reference_image_path = keras.utils.get_file(style_photo_name, style_photo_url)
         self.result_name = result_name
         self.setup_dimensions()
         self.make_model()

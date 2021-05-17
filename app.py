@@ -5,6 +5,11 @@ from rq import Queue
 from worker import r
 from neural_model_task import background_task
 from PIL import Image
+import boto3
+
+s3 = boto3.client('s3')
+bucket_name = 'neural-art-transfer-image-uploads'
+
 
 #where our images will go
 upload_folder = 'image_uploads'
@@ -72,27 +77,33 @@ def upload():
         base_photo = request.files['base_photo']
         style_photo = request.files['style_photo']
         
-        if allowed_file(base_photo.filename) and allowed_file(style_photo.filename):
+        base_photo_name = base_photo.filename
+        style_photo_name = style_photo.filename
         
-            base_dir = os.getcwd()
-            image_uploads_dir = os.path.join(base_dir, 'static/image_uploads')
+        if allowed_file(base_photo.filename) and allowed_file(style_photo.filename):
+                
+            s3.upload_fileobj(base_photo, bucket_name, base_photo_name, ExtraArgs={
+                'ACL':'public-read', 
+                'ContentType': base_photo.content_type
+                }
+            )
             
-            base_photo_filename = secure_filename(base_photo.filename) 
-            base_photo.save(f"{os.path.join(image_uploads_dir, base_photo_filename)}")
-            base_photo_filepath = f"{os.path.join(image_uploads_dir, base_photo_filename)}"
+            s3.upload_fileobj(style_photo, bucket_name, style_photo_name, ExtraArgs={
+                'ACL':'public-read',
+                'ContentType': style_photo.content_type
+                }
+            )
             
-            result_photo_filename = base_photo_filename
+            result_photo_filename = base_photo_name
             
-            style_photo_filename = secure_filename(style_photo.filename)    
-            style_photo.save(f"{os.path.join(image_uploads_dir, style_photo_filename)}")
-            style_photo_filepath = f"{os.path.join(image_uploads_dir, style_photo_filename)}"
-            
-                                    
-            job = q.enqueue(background_task, base_photo_filepath, style_photo_filepath, result_photo_filename)
+            base_photo_url = f"http://{bucket_name}.s3.amazonaws.com/{base_photo_name}"
+            style_photo_url = f"http://{bucket_name}.s3.amazonaws.com/{style_photo_name}"
+   
+            job = q.enqueue(background_task, base_photo_name, base_photo_url, style_photo_name, style_photo_url, result_photo_filename)
             global job_id
             job_id = job.id
             print(job_id)
-            return jsonify(reponse='sucess', job_id=job_id) 
+            return jsonify(reponse='sucess') 
 
     return jsonify(reponse='no upload')
         

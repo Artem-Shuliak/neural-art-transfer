@@ -7,7 +7,7 @@
 
 {% block body %}
 <h1 class="heading">Art Style Transfer</h1>
-<img class="header_image" src="static/images/header_image.gif" alt="This is an animated gif image, but it does not move"/>
+<img class="header_image" src={{url_for('static', filename='images/header_image.gif')}} alt="This is an animated gif image, but it does not move"/>
 
 <div id="dim-bg" class="dim-bg"></div>
 
