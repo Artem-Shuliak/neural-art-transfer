@@ -74,7 +74,7 @@ def upload():
         if allowed_file(base_photo.filename) and allowed_file(style_photo.filename):
         
             base_dir = os.getcwd()
-            image_uploads_dir = os.path.join(base_dir, 'image_uploads')
+            image_uploads_dir = os.path.join(base_dir, 'static/image_uploads')
             
             base_photo_filename = secure_filename(base_photo.filename) 
             # base_photo.save(os.path.join(app.config['upload_folder'], base_photo_filename))
