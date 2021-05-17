@@ -72,26 +72,23 @@ def upload():
         base_photo = request.files['base_photo']
         style_photo = request.files['style_photo']
         
-        base_image = Image.open(base_photo)
-        style_image = Image.open(base_photo)
-   
         if allowed_file(base_photo.filename) and allowed_file(style_photo.filename):
         
-            # base_dir = os.getcwd()
-            # image_uploads_dir = os.path.join(base_dir, 'static/image_uploads')
+            base_dir = os.getcwd()
+            image_uploads_dir = os.path.join(base_dir, 'static/image_uploads')
             
             base_photo_filename = secure_filename(base_photo.filename) 
-            # base_photo.save(f"{os.path.join(image_uploads_dir, base_photo_filename)}")
-            # base_photo_filepath = f"{os.path.join(image_uploads_dir, base_photo_filename)}"
+            base_photo.save(f"{os.path.join(image_uploads_dir, base_photo_filename)}")
+            base_photo_filepath = f"{os.path.join(image_uploads_dir, base_photo_filename)}"
             
             result_photo_filename = base_photo_filename
             
-            # style_photo_filename = secure_filename(style_photo.filename)    
-            # style_photo.save(f"{os.path.join(image_uploads_dir, style_photo_filename)}")
-            # style_photo_filepath = f"{os.path.join(image_uploads_dir, style_photo_filename)}"
+            style_photo_filename = secure_filename(style_photo.filename)    
+            style_photo.save(f"{os.path.join(image_uploads_dir, style_photo_filename)}")
+            style_photo_filepath = f"{os.path.join(image_uploads_dir, style_photo_filename)}"
             
                                     
-            job = q.enqueue(background_task, base_image, style_image, result_photo_filename)
+            job = q.enqueue(background_task, base_photo_filepath, style_photo_filepath, result_photo_filename)
             global job_id
             job_id = job.id
             print(job_id)
