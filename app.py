@@ -73,7 +73,7 @@ def upload():
         style_photo = request.files['style_photo']
         
         base_image = Image.open(base_photo)
-        style_image = Image.open(style_photo)
+        style_image = Image.open(base_photo)
    
         if allowed_file(base_photo.filename) and allowed_file(style_photo.filename):
         
