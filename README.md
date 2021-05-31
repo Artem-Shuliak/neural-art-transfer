@@ -1,9 +1,10 @@
 # neural-art-transfer
 
-link to the wesbite - https://neural-artwork-transfer.herokuapp.com/
+**link to the wesbite** - https://neural-artwork-transfer.herokuapp.com/
 
-
-
+![](images/image-1.png)
+![](images/image-2.png)
+![](images/image-3.png)
 
 in order to use the app 
 
