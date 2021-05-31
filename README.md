@@ -1,7 +1,6 @@
 # neural-art-transfer
 
-# link to the wesbite
-https://neural-artwork-transfer.herokuapp.com/
+link to the wesbite - https://neural-artwork-transfer.herokuapp.com/
 
 
 
